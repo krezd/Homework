@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonView;
 import com.homework.home.dto.Home;
 import com.homework.home.dto.Views;
 import com.homework.home.dto.request.HomeRequest;
+import com.homework.home.dto.request.RoomRequest;
+import com.homework.home.entity.HomeEntity;
+import com.homework.home.entity.RoomEntity;
 import com.homework.home.service.HomeService;
 import jakarta.validation.Valid;
 import org.springframework.http.MediaType;
@@ -27,39 +30,36 @@ public class HomeServiceController {
         return "Hello home!";
     }
     @PostMapping("/homes")
-    public ResponseEntity<Home> createHome(@RequestBody @Valid HomeRequest request){
-        Home home = homeService.createHome(request);
-        return ResponseEntity.ok(home);
+    public ResponseEntity<HomeEntity> createHome(@RequestBody @Valid HomeRequest request){
+        HomeEntity homeEntity = homeService.createHome(request);
+        return ResponseEntity.ok(homeEntity);
     }
     @GetMapping("/homes")
     @JsonView(Views.Public.class)
-    public ResponseEntity<List<Home>> getHomes(){
+    public ResponseEntity<List<HomeEntity>> getHomes(){
         return ResponseEntity.ok(homeService.getHomes());
     }
 
     @GetMapping("/homes/{homeId}")
-    public ResponseEntity<Home> getHomeById(@PathVariable Integer homeId){
-        Home home = homeService.getHome(homeId-1);
-        if(home != null){
-            return ResponseEntity.ok(home);
+    public ResponseEntity<HomeEntity> getHomeById(@PathVariable Long homeId){
+        HomeEntity homeEntity = homeService.getHome(homeId);
+        if(homeEntity != null){
+            return ResponseEntity.ok(homeEntity);
         }
         return ResponseEntity.notFound().build();
     }
     @PutMapping ("/homes/{homeId}")
-    public ResponseEntity<Home> changeHome(@PathVariable Integer homeId,@RequestBody @Valid HomeRequest request){
-        if(homeService.changeHome(homeId-1,request)){
-            return ResponseEntity.ok(homeService.getHome(homeId-1));
+    public ResponseEntity<HomeEntity> changeHome(@PathVariable Long homeId,@RequestBody @Valid HomeRequest request){
+        if(homeService.changeHome(homeId,request)){
+            return ResponseEntity.ok(homeService.getHome(homeId));
         }
         return ResponseEntity.notFound().build();
     }
     @DeleteMapping  ("/homes/{homeId}")
-    public ResponseEntity<String> deleteHome(@PathVariable Integer homeId){
-        if(homeService.deleteHome(homeId-1)){
+    public ResponseEntity<String> deleteHome(@PathVariable Long homeId){
+        if(homeService.deleteHome(homeId)){
             return ResponseEntity.ok("Success");
         }
         return ResponseEntity.notFound().build();
     }
-
-
-
 }
