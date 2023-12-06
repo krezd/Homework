@@ -48,6 +48,7 @@ public class HomeServiceController {
         }
         return ResponseEntity.notFound().build();
     }
+
     @PutMapping ("/homes/{homeId}")
     public ResponseEntity<HomeEntity> changeHome(@PathVariable Long homeId,@RequestBody @Valid HomeRequest request){
         if(homeService.changeHome(homeId,request)){

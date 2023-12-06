@@ -17,35 +17,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/api",produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/api", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RoomServiceController {
     private final RoomService roomService;
 
-    public RoomServiceController(RoomService roomService){
+    public RoomServiceController(RoomService roomService) {
         this.roomService = roomService;
     }
 
     @PostMapping("/rooms")
-    public ResponseEntity<RoomEntity> createRoom(@RequestParam Long id, @RequestBody @Valid RoomRequest request){
-        RoomEntity roomEntity = roomService.createRoom(id,request);
-        if(roomEntity != null){
+    public ResponseEntity<RoomEntity> createRoom(@RequestParam Long id, @RequestBody @Valid RoomRequest request) {
+        RoomEntity roomEntity = roomService.createRoom(id, request);
+        if (roomEntity != null) {
             return ResponseEntity.ok(roomEntity);
         }
         return ResponseEntity.notFound().build();
     }
-    @DeleteMapping  ("/rooms/{roomId}")
-    public ResponseEntity<String> deleteRoom(@PathVariable Long roomId){
-        if(roomService.deleteRoom(roomId)){
+
+    @DeleteMapping("/rooms/{roomId}")
+    public ResponseEntity<String> deleteRoom(@PathVariable Long roomId) {
+        if (roomService.deleteRoom(roomId)) {
             return ResponseEntity.ok("Success");
         }
         return ResponseEntity.notFound().build();
     }
-    @PutMapping ("/rooms/{roomId}")
-    public ResponseEntity<RoomEntity> changeRoom(@PathVariable Long roomId,@RequestBody @Valid RoomRequest request){
-        if(roomService.changeRoom(roomId,request)){
+
+    @PutMapping("/rooms/{roomId}")
+    public ResponseEntity<RoomEntity> changeRoom(@PathVariable Long roomId, @RequestBody @Valid RoomRequest request) {
+        if (roomService.changeRoom(roomId, request)) {
             return ResponseEntity.ok(roomService.getRoom(roomId));
         }
         return ResponseEntity.notFound().build();
     }
 
 }
+
